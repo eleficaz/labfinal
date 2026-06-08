@@ -3,9 +3,17 @@ kind: Pod
 metadata:
   labels:
     app: jenkins-agent
+
 spec:
   serviceAccountName: jenkins
+
   containers:
+    - name: node
+      image: node:22-alpine
+      command:
+        - cat
+      tty: true
+
     - name: kubectl
       image: dtzar/helm-kubectl:3.14
       command:
