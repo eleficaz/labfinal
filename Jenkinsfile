@@ -1,6 +1,5 @@
 pipeline {
 
-
 agent {
     kubernetes {
         yamlFile 'agent.yaml'
@@ -15,19 +14,25 @@ stages {
 
     stage('install') {
         steps {
-            sh 'npm install'
+            container('node') {
+                sh 'npm install'
+            }
         }
     }
 
     stage('test') {
         steps {
-            sh 'npm test'
+            container('node') {
+                sh 'npm test'
+            }
         }
     }
 
     stage('build') {
         steps {
-            sh 'npm run build'
+            container('node') {
+                sh 'npm run build'
+            }
         }
     }
 
@@ -39,7 +44,9 @@ stages {
 
     stage('deploy') {
         steps {
-            sh 'echo Deploy OK'
+            container('kubectl') {
+                sh 'kubectl get pods -n ns-juan-rojas'
+            }
         }
     }
 }
